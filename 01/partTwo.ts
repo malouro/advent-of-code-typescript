@@ -32,7 +32,7 @@ export default async function(inputFile: string | PathLike): Promise<number> {
 
   for (const line of lines) {
     const firstMatch: { index: number; value: string; } = { index: Number.MAX_SAFE_INTEGER, value: '' };
-    const lastMatch:  { index: number; value: string; } = { index: -1,                       value: '' };
+    const lastMatch:  { index: number; value: string; } = { index: -1,                      value: '' };
 
     StringDigitKeys.forEach((key) => {
       const matches = [ ...line.matchAll(new RegExp(key, 'g')) ];
