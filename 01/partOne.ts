@@ -1,10 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { PathLike } from 'node:fs'
 
-export default async function(
-  inputFile: string | PathLike = '01/star-input.txt',
-  // options?: SolverOptions = { part: 1 }
-): Promise<number> {
+export default async function(inputFile: string | PathLike): Promise<number> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
   const lines = input.split('\n');
   const values = [];
@@ -31,11 +28,5 @@ export default async function(
     values.push(Number.parseInt(`${firstDigit}${lastDigit}`))
   }
 
-  console.log(values);
-
-  const sum = values.reduce((prev, curr) => {
-    // console.log(prev, curr)
-    return curr + prev
-  });
-  return sum;
+  return values.reduce((prev, curr) => curr + prev);
 }

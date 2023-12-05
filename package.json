@@ -19,6 +19,7 @@
   "homepage": "https://github.com/malouro/advent-of-code-2023#readme",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.4.1",
+    "@types/babel__core": "^7.20.5",
     "@types/jest": "^29.5.10",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.13.1",
