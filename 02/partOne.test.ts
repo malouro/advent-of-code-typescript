@@ -6,10 +6,8 @@ describe('Day 2', () => {
       expect(await solver('02/inputSample.txt')).toEqual(8);
     });
   
-    test.todo('solves correctly with puzzle input');
-  });
-
-  describe.skip('Testing sandbox', () => {
-    test.todo('test sandbox')
+    test('solves correctly with puzzle input', async () => {
+      expect(await solver('02/inputForTheStar.txt')).toEqual(2551);
+    });
   });
 });
