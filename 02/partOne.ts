@@ -1,36 +1,11 @@
 import { readFile } from 'node:fs/promises';
 import { PathLike } from 'node:fs'
 
-const GAME_ID_REGEX = /Game (\d+): /
-const GAME_SPLITTER = ';'
-
-type Color = 'red' | 'blue' | 'green';
-
-const limits: Record<Color, number> = {
-  red: 12,
-  green: 13,
-  blue: 14
-}
-
-/**
- * Returns whether or not the given game was possible.
- */
-export function validateGame(game: string, color: Color): boolean {
-  const [, matches] = new RegExp(`(\\d+) ${color}`).exec(game.trim()) ?? [];
-
-  if (typeof matches === 'undefined') {
-    // Couldn't match, let's assume a 0 of the amount
-    return true;
-  }
-  if (Number.parseInt(matches) > limits[color]) {
-    return false;
-  }
-  return true;
-}
+import { validateGame, GAME_ID_REGEX, GAME_SPLITTER } from './helpers'
 
 export default async function(inputFile: string | PathLike): Promise<number> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
-  const lines = input.split('\n')
+  const lines = input.split('\n');
 
   let sum = 0;
 
