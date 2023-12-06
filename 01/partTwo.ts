@@ -21,9 +21,9 @@ const StringDigits = new Map()
   .set('6', 6)
   .set('7', 7)
   .set('8', 8)
-  .set('9', 9);
+  .set('9', 9) as Map<string, number>;
 
-const StringDigitKeys: string[] = [ ...StringDigits.keys() ];
+const StringDigitKeys = [ ...StringDigits.keys() ] as string[];
 
 export default async function(inputFile: string | PathLike): Promise<number> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
@@ -31,8 +31,8 @@ export default async function(inputFile: string | PathLike): Promise<number> {
   const values: number[] = [];
 
   for (const line of lines) {
-    const firstMatch: { index: number; value: string; } = { index: Number.MAX_SAFE_INTEGER, value: '' };
-    const lastMatch:  { index: number; value: string; } = { index: -1,                      value: '' };
+    const firstMatch: { index: number; value: number; } = { index: Number.MAX_SAFE_INTEGER, value: 0 };
+    const lastMatch:  { index: number; value: number; } = { index: -1,                      value: 0 };
 
     StringDigitKeys.forEach((key) => {
       const matches = [ ...line.matchAll(new RegExp(key, 'g')) ];
@@ -41,11 +41,11 @@ export default async function(inputFile: string | PathLike): Promise<number> {
         if (typeof match.index !== 'undefined') {
           if (match.index < firstMatch.index) {
             firstMatch.index = match.index;
-            firstMatch.value = StringDigits.get(match[0]);
+            firstMatch.value = StringDigits.get(match[0]) as number;
           }
           if (match.index > lastMatch.index) {
             lastMatch.index = match.index;
-            lastMatch.value = StringDigits.get(match[0]);
+            lastMatch.value = StringDigits.get(match[0]) as number;
            }
         }
       });

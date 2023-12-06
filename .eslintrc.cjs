@@ -5,13 +5,20 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/stylistic'
-  ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  overrides: [],
+  overrides: [
+    {
+      files: ['*.ts'],
+      extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/strict-type-checked',
+        'plugin:@typescript-eslint/stylistic'
+      ],
+      parserOptions: {
+        project: ['./tsconfig.json']
+      }
+    }
+  ],
   rules: {}
 }
