@@ -25,6 +25,16 @@ yarn test --watch
 yarn test ./$DAY_NUMBER
 ```
 
+**Linting & Formatting**
+
+```sh
+# Lint
+yarn lint
+# Format
+yarn format:check # Check if formatting is good
+yarn format:fix   # Write fixes for formatting (work in a clean tree)
+```
+
 ## Progress Tracking
 
 | sun | mon | tues | wed | thu | fri  |  sat   |
