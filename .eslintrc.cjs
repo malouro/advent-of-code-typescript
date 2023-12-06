@@ -13,7 +13,7 @@ module.exports = {
       extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/strict-type-checked',
-        'plugin:@typescript-eslint/stylistic'
+        'prettier'
       ],
       parserOptions: {
         project: ['./tsconfig.json']
