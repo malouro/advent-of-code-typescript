@@ -3,11 +3,11 @@ import solver from './partTwo';
 describe('Day 1', () => {
   describe('Part Two', () => {
     test('solves correctly with sample input', async () => {
-      expect(await solver('01/inputSample2.txt')).toEqual(281);
+      expect(await solver('01/sample2.txt')).toEqual(281);
     });
   
     test('solves correctly with puzzle input', async () => {
-      expect(await solver('01/inputForTheStar.txt')).toEqual(53592);
+      expect(await solver('01/star.txt')).toEqual(53592);
     });
   });
 
