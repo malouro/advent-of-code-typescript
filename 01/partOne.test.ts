@@ -5,7 +5,7 @@ describe('Day 1', () => {
     test('solves correctly with sample input', async () => {
       expect(await solver('01/sample1.txt')).toEqual(142);
     });
-  
+
     test('solves correctly with puzzle input', async () => {
       expect(await solver('01/star.txt')).toEqual(55621);
     });

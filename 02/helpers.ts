@@ -1,15 +1,14 @@
-
 type Color = 'red' | 'blue' | 'green';
-type ColorLimits = Record<Color, number>
+type ColorLimits = Record<Color, number>;
 
 export const LIMITS: ColorLimits = {
   red: 12,
   green: 13,
-  blue: 14
-}
+  blue: 14,
+};
 
-export const GAME_ID_REGEX = /Game (\d+): /
-export const GAME_SPLITTER = ';'
+export const GAME_ID_REGEX = /Game (\d+): /;
+export const GAME_SPLITTER = ';';
 
 /**
  * @returns Whether or not the given game was possible, given the limit of each color.
@@ -17,7 +16,7 @@ export const GAME_SPLITTER = ';'
 export function validateGame(
   game: string,
   color: Color,
-  colorLimits: ColorLimits = LIMITS
+  colorLimits: ColorLimits = LIMITS,
 ): boolean {
   const amount = getAmountOfColor(game, color);
 

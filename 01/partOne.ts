@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
-import { PathLike } from 'node:fs'
+import { PathLike } from 'node:fs';
 
-export default async function(inputFile: string | PathLike): Promise<number> {
+export default async function (inputFile: string | PathLike): Promise<number> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
   const lines = input.split('\n');
   const values = [];
@@ -12,20 +12,20 @@ export default async function(inputFile: string | PathLike): Promise<number> {
 
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < line.length; i++) {
-      if (/[0-9]/.test(line[i])) {
+      if (/\d/.test(line[i])) {
         firstDigit = line[i];
         break;
       }
     }
 
     for (let j = line.length - 1; j >= 0; j--) {
-      if (/[0-9]/.test(line[j])) {
+      if (/\d/.test(line[j])) {
         lastDigit = line[j];
         break;
       }
     }
 
-    values.push(Number.parseInt(`${firstDigit}${lastDigit}`))
+    values.push(Number.parseInt(`${firstDigit}${lastDigit}`));
   }
 
   return values.reduce((prev, curr) => curr + prev);

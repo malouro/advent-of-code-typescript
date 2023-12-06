@@ -1,19 +1,21 @@
 import { readFile } from 'node:fs/promises';
-import { PathLike } from 'node:fs'
+import { PathLike } from 'node:fs';
 
-import { validateGame, GAME_ID_REGEX, GAME_SPLITTER } from './helpers'
+import { validateGame, GAME_ID_REGEX, GAME_SPLITTER } from './helpers';
 
-export default async function(inputFile: string | PathLike): Promise<number> {
+export default async function (inputFile: string | PathLike): Promise<number> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
   const lines = input.split('\n');
 
   let sum = 0;
 
   for (const line of lines) {
-    const [,gameID] = GAME_ID_REGEX.exec(line) ?? [];
+    const [, gameID] = GAME_ID_REGEX.exec(line) ?? [];
 
     if (typeof gameID === 'undefined') {
-      throw new Error(`Something went wrong; the gameID couldn't be parsed...\n\n${line}`);
+      throw new Error(
+        `Something went wrong; the gameID couldn't be parsed...\n\n${line}`,
+      );
     }
 
     const games = line.replace(GAME_ID_REGEX, '').split(GAME_SPLITTER);

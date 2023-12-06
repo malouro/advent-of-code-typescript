@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { PathLike } from 'node:fs'
+import { PathLike } from 'node:fs';
 
 const StringDigits = new Map()
   .set('zero', 0)
@@ -23,19 +23,22 @@ const StringDigits = new Map()
   .set('8', 8)
   .set('9', 9) as Map<string, number>;
 
-const StringDigitKeys = [ ...StringDigits.keys() ] as string[];
+const StringDigitKeys = [...StringDigits.keys()] as string[];
 
-export default async function(inputFile: string | PathLike): Promise<number> {
+export default async function (inputFile: string | PathLike): Promise<number> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
   const lines = input.split('\n');
   const values: number[] = [];
 
   for (const line of lines) {
-    const firstMatch: { index: number; value: number; } = { index: Number.MAX_SAFE_INTEGER, value: 0 };
-    const lastMatch:  { index: number; value: number; } = { index: -1,                      value: 0 };
+    const firstMatch: { index: number; value: number } = {
+      index: Number.MAX_SAFE_INTEGER,
+      value: 0,
+    };
+    const lastMatch: { index: number; value: number } = { index: -1, value: 0 };
 
     StringDigitKeys.forEach((key) => {
-      const matches = [ ...line.matchAll(new RegExp(key, 'g')) ];
+      const matches = [...line.matchAll(new RegExp(key, 'g'))];
 
       matches.forEach((match) => {
         if (typeof match.index !== 'undefined') {
@@ -46,7 +49,7 @@ export default async function(inputFile: string | PathLike): Promise<number> {
           if (match.index > lastMatch.index) {
             lastMatch.index = match.index;
             lastMatch.value = StringDigits.get(match[0]) as number;
-           }
+          }
         }
       });
     });

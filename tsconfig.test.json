@@ -3,5 +3,5 @@
   "include": ["**/*.test.ts"],
   "typeAcquisition": {
     "include": ["jest"]
-  },
+  }
 }
