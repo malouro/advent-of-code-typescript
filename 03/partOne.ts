@@ -3,29 +3,29 @@ import { PathLike } from 'node:fs';
 
 export const EMPTY_SYMBOL = '.';
 
-type position = {
+type Position = {
   x: number; // Row, or "line"; starting from top
   y: number; // Column; starting from left-most
 };
 type PartNumber = {
   id: string;
-  position: position;
+  position: Position;
 };
 type SymbolMarker = {
   symbol: string;
-  position: position;
+  position: Position;
 };
 
-export function symbolExistsAtPos(p: position, symbols: SymbolMarker[]): boolean {
+export function symbolExistsAtPos(p: Position, symbols: SymbolMarker[]): boolean {
   return symbols.some(({ position }) => position.x === p.x && position.y === p.y);
 }
 
 export function hasAdjacentSymbol(
   puzzle: string[][],
   symbols: SymbolMarker[],
-  id: string,
-  posToCheck: position,
+  part: PartNumber
 ) {
+  const { id, position } = part;
   const { length: lengthOfNumber } = id;
   const puzzleWidth = puzzle[0].length;
   const puzzleHeight = puzzle.length;
@@ -74,7 +74,10 @@ export function hasAdjacentSymbol(
 
 export default async function (inputFile: string | PathLike): Promise<number> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
-  const lines = input.split('\n');
+  const lines = input
+    .split('\n')
+    .map((line) => line.replace('\r', '') // windows fix
+    .concat(EMPTY_SYMBOL)); // easier handling of EOL edge case, I'm lazy :)
 
   const possibleParts: PartNumber[] = [];
   const symbols: SymbolMarker[] = [];
@@ -88,9 +91,7 @@ export default async function (inputFile: string | PathLike): Promise<number> {
 
       if (/\d/.test(char)) {
         idBuilder += char;
-        if (charIdx !== line.length - 1) {
-          continue;
-        }
+        continue;
       } else if (char !== '.') {
         symbols.push({
           symbol: char,
@@ -108,16 +109,9 @@ export default async function (inputFile: string | PathLike): Promise<number> {
     }
   }
 
-  // For debugging:
-  console.log('Possible parts?:', possibleParts);
-  console.log('Symbols found:', symbols);
-
-  const partNumbers = possibleParts.filter(({ id, position }) =>
-    hasAdjacentSymbol(lines as unknown as string[][], symbols, id, position),
+  const partNumbers = possibleParts.filter((part) =>
+    hasAdjacentSymbol(lines as unknown as string[][], symbols, part),
   );
-
-  // For debugging:
-  console.log('Part Numbers:', partNumbers);
 
   return partNumbers.reduce((acc, partNumber) => acc + Number.parseInt(partNumber.id), 0);
 }
