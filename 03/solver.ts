@@ -169,7 +169,7 @@ export default async function (inputFile: string | PathLike): Promise<Day3Return
       if (/\d/.test(char)) {
         idBuilder += char;
         continue;
-      } else if (char !== '.') {
+      } else if (char !== EMPTY_SYMBOL) {
         symbols.push({
           symbol: char,
           position: { x: charIdx, y: lineIdx },
