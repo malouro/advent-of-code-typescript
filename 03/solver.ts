@@ -7,7 +7,7 @@ type Position = {
   x: number; // Row, or "line"; starting from top
   y: number; // Column; starting from left-most
 };
-type PartNumber = {
+type Part = {
   id: string;
   position: Position;
 };
@@ -20,11 +20,18 @@ type Day3ReturnValue = {
   gearRatios: number;
 };
 
+/**
+ * Does a symbol exist at the given x,y coord?
+ */
 export function symbolExistsAtPos(p: Position, symbols: SymbolMarker[]): boolean {
   return symbols.some(({ position }) => position.x === p.x && position.y === p.y);
 }
 
-export function getPartAtPos(p: Position, parts: PartNumber[]): PartNumber | null {
+/**
+ * Gives back the exact Part that may exist at a given x,y coord
+ * If none, return `null`
+ */
+export function getPartAtPos(p: Position, parts: Part[]): Part | null {
   let part = null;
 
   parts.forEach(({ position, id }) => {
@@ -36,10 +43,13 @@ export function getPartAtPos(p: Position, parts: PartNumber[]): PartNumber | nul
   return part;
 }
 
+/**
+ * Does the given Part have an adjacent symbol?
+ */
 export function hasAdjacentSymbol(
   puzzle: string[][],
   symbols: SymbolMarker[],
-  part: PartNumber,
+  part: Part,
 ): boolean {
   const { id, position: posToCheck } = part;
   const { length: lengthOfNumber } = id;
@@ -88,16 +98,15 @@ export function hasAdjacentSymbol(
   return false;
 }
 
-export function getAdjacentParts(
-  puzzle: string[][],
-  parts: PartNumber[],
-  posToCheck: Position,
-): PartNumber[] {
+/**
+ * Get all parts that are adjacent to a given SymbolMarker
+ */
+export function getAdjacentParts(puzzle: string[][], parts: Part[], posToCheck: Position): Part[] {
   const puzzleWidth = puzzle[0].length;
   const puzzleHeight = puzzle.length;
-  const partMatchingList: PartNumber[] = [];
+  const partMatchingList: Part[] = [];
 
-  let tempMatchingPart: PartNumber | null = null;
+  let tempMatchingPart: Part | null = null;
 
   function toPushOrNotToPush() {
     if (
@@ -150,15 +159,16 @@ export function getAdjacentParts(
 
 export default async function (inputFile: string | PathLike): Promise<Day3ReturnValue> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
-  const lines = input.split('\n').map((line) =>
-    line
-      .replace('\r', '') // windows fix
-      .concat(EMPTY_SYMBOL),
-  ); // easier handling of EOL edge case, I'm lazy :)
+  const lines = input.split('\n').map(
+    (line) =>
+      line
+        .replace('\r', '') // windows fix
+        .concat(EMPTY_SYMBOL), // easier handling of EOL edge case, I'm lazy :)
+  );
 
-  const possibleParts: PartNumber[] = [];
+  // Build out arrays of Parts and Symbols:
+  const possibleParts: Part[] = [];
   const symbols: SymbolMarker[] = [];
-
   for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
     const line = lines[lineIdx];
     let idBuilder = '';
@@ -186,25 +196,26 @@ export default async function (inputFile: string | PathLike): Promise<Day3Return
     }
   }
 
-  const partNumbers = possibleParts.filter((part) =>
+  // The parts we care about; they have symbols next to them.
+  const parts = possibleParts.filter((part) =>
     hasAdjacentSymbol(lines as unknown as string[][], symbols, part),
   );
 
   // For debugging:
   // console.log('Part Numbers:', partNumbers.length, partNumbers);
 
+  const partNumbers = parts.reduce((acc, part) => acc + Number.parseInt(part.id), 0);
   const gearRatios = symbols.reduce((prev, symbol) => {
-    const adjParts = getAdjacentParts(lines as unknown as string[][], partNumbers, symbol.position);
+    const adjParts = getAdjacentParts(lines as unknown as string[][], parts, symbol.position);
 
     if (adjParts.length === 2) {
       return prev + Number.parseInt(adjParts[0].id) * Number.parseInt(adjParts[1].id);
     }
-
     return prev;
   }, 0);
 
   return {
-    partNumbers: partNumbers.reduce((acc, partNumber) => acc + Number.parseInt(partNumber.id), 0),
+    partNumbers,
     gearRatios,
   };
 }
