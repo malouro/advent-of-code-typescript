@@ -1,16 +1,36 @@
-import solver from './solver';
+import solver, { Day4ReturnValue } from './solver';
 
-describe('Day 3', () => {
+describe('Day 4', () => {
+  let sampleInputResult: Day4ReturnValue = null;
+  let puzzleInputResult: Day4ReturnValue = null;
+
   describe('Part One', () => {
-    test('solves correctly with sample input', async () => {
-      const answer = await solver('04/sample1.txt');
-
-      expect(answer).toEqual(13);
+    beforeAll(async () => {
+      sampleInputResult = await solver('04/sample1.txt');
+      puzzleInputResult = await solver('04/star.txt');
     });
-    test('solves correctly with sample input', async () => {
-      const answer = await solver('04/star.txt');
 
-      expect(answer).toEqual(20407);
+    test('solves correctly with sample input', () => {
+      expect(sampleInputResult?.pointsEarned).toEqual(13);
+    });
+
+    test('solves correctly with puzzle input', () => {
+      expect(puzzleInputResult?.pointsEarned).toEqual(20407);
+    });
+  });
+
+  describe.only('Part Two', () => {
+    beforeAll(async () => {
+      sampleInputResult = await solver('04/sample2.txt');
+      puzzleInputResult = await solver('04/star.txt');
+    });
+
+    test('solves correctly with sample input', () => {
+      expect(sampleInputResult?.scratchCardsEarned).toEqual(30);
+    });
+
+    test('solves correctly with puzzle input', () => {
+      expect(puzzleInputResult?.scratchCardsEarned).toEqual(23806951);
     });
   });
 });
