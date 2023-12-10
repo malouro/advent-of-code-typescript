@@ -1,10 +1,16 @@
 import { readFile } from 'node:fs/promises';
 import { PathLike } from 'node:fs';
 
+/**
+ * How much can you cash in a card, given the # of winning numbers?
+ */
 function cashInCard(winningCount: number): number {
   return Math.floor(Math.pow(2, winningCount - 1));
 }
 
+/**
+ * Returns how many winning numbers are on a card.
+ */
 function getWinningNumbersInCard({ cardNumbers, winningNumbers }: Card): number[] {
   const numbersThatWon: number[] = [];
 
@@ -17,6 +23,10 @@ function getWinningNumbersInCard({ cardNumbers, winningNumbers }: Card): number[
   return numbersThatWon;
 }
 
+/**
+ * Heard you liked cards?
+ * (Grabs the total earned cards from your scratch-card pile.)
+ */
 function yoDawg(cards: Card[], cardsEarnedPerCard: Map<number, number>, acc: number = 0): number {
   if (cards.length === 0) {
     return acc;
@@ -27,6 +37,7 @@ function yoDawg(cards: Card[], cardsEarnedPerCard: Map<number, number>, acc: num
 
   acc += count;
 
+  // Debugging only:
   // console.log(
   //   `Card number ${currentCard.id} has ${winningsOnThisCard} winning #'s.`,
   //   `There are ${currentCard.count} amount of this card.`,
@@ -59,10 +70,9 @@ export type Day4ReturnValue = {
 export default async function (inputFile: string | PathLike): Promise<Day4ReturnValue> {
   const input = await readFile(inputFile, { encoding: 'utf-8' });
   const cardsToProcess = input.split('\n');
-
+  const cards: Card[] = [];
   const pointsEarnedPerCard: Map<number, number> = new Map();
   const cardsEarnedPerCard: Map<number, number> = new Map();
-  const cards: Card[] = [];
 
   for (const cardInput of cardsToProcess) {
     const [[cardId], winningNumbers, cardNumbers] = cardInput
@@ -74,12 +84,9 @@ export default async function (inputFile: string | PathLike): Promise<Day4Return
       );
 
     const card: Card = { id: cardId, cardNumbers, winningNumbers, count: 1 };
-
-    cards.push(card);
-    // console.log(card);
-
     const winningCount = getWinningNumbersInCard(card).length;
 
+    cards.push(card);
     pointsEarnedPerCard.set(cardId, cashInCard(winningCount));
     cardsEarnedPerCard.set(cardId, winningCount);
   }
