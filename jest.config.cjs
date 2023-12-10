@@ -2,7 +2,6 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  verbose: true,
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
@@ -11,5 +10,8 @@ module.exports = {
       },
     ],
   },
-  moduleFileExtensions: ['ts', 'js', 'json', 'txt']
+  moduleFileExtensions: ['ts', 'js', 'json', 'txt'],
+  moduleNameMapper: {
+    "@helpers/(.*)": "<rootDir>/helpers/$1"
+  }
 };

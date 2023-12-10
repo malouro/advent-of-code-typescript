@@ -19,7 +19,7 @@ describe('Day 4', () => {
     });
   });
 
-  describe.only('Part Two', () => {
+  describe('Part Two', () => {
     beforeAll(async () => {
       sampleInputResult = await solver('04/sample2.txt');
       puzzleInputResult = await solver('04/star.txt');

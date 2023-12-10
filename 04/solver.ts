@@ -1,5 +1,5 @@
-import { readFile } from 'node:fs/promises';
 import { PathLike } from 'node:fs';
+import { readInputFile } from '@helpers/fs';
 
 /**
  * How much can you cash in a card, given the # of winning numbers?
@@ -68,7 +68,7 @@ export type Day4ReturnValue = {
 } | null;
 
 export default async function (inputFile: string | PathLike): Promise<Day4ReturnValue> {
-  const input = await readFile(inputFile, { encoding: 'utf-8' });
+  const input: string = await readInputFile(inputFile);
   const cardsToProcess = input.split('\n');
   const cards: Card[] = [];
   const pointsEarnedPerCard: Map<number, number> = new Map();
