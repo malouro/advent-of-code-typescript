@@ -10,7 +10,7 @@ function getRoots(b: number, c: number): { lo: number; hi: number } {
   const root2 = (-b - Math.sqrt(Math.pow(b, 2) - 4 * c)) / 2;
 
   // lo is the lowest possible integer greater than the lower root
-  // hi is the hight possible integer less than the upper root
+  // hi is the highest possible integer less than the upper root
   return {
     lo: Math.trunc(Math.min(root1, root2) + 1),
     hi: Math.ceil(Math.max(root1, root2) - 1),
