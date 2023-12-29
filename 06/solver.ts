@@ -6,12 +6,14 @@ type Day6ReturnValue = {
 };
 
 function getRoots(b: number, c: number): { lo: number; hi: number } {
-  const res1 = (-b + Math.sqrt(Math.pow(b, 2) - 4 * c)) / 2;
-  const res2 = (-b - Math.sqrt(Math.pow(b, 2) - 4 * c)) / 2;
+  const root1 = (-b + Math.sqrt(Math.pow(b, 2) - 4 * c)) / 2;
+  const root2 = (-b - Math.sqrt(Math.pow(b, 2) - 4 * c)) / 2;
 
+  // lo is the lowest possible integer greater than the lower root
+  // hi is the hight possible integer less than the upper root
   return {
-    lo: Math.trunc(Math.min(res1, res2) + 1),
-    hi: Math.ceil(Math.max(res1, res2) - 1),
+    lo: Math.trunc(Math.min(root1, root2) + 1),
+    hi: Math.ceil(Math.max(root1, root2) - 1),
   };
 }
 
