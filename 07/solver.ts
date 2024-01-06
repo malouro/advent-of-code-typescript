@@ -5,57 +5,47 @@ import { PathLike } from 'node:fs';
  * @param {number[]} hand Array of numbers that represent the card values.
  * @returns {HandValue}
  */
-function getHandValue(hand: number[]): { handType: number; values: number[] } {
-  const matches = new Map();
+function getHandValue(hand: number[]): { handType: number } {
+  const cardCounter = new Map<number, number>();
   let handType = 0;
-  let values: number[] = [];
 
   for (const card of hand) {
-    if (!matches.has(card)) {
-      matches.set(card, 1);
+    if (cardCounter.has(card)) {
+      cardCounter.set(card, (cardCounter.get(card) as number) + 1);
     } else {
-      matches.set(card, matches.get(card) + 1);
+      cardCounter.set(card, 1);
     }
   }
 
-  const cardValues = Array.from(matches.values());
-  const pairTypes = cardValues.filter((val) => val !== 1);
-  const pairValues = Array.from(matches.keys()).filter((val) => matches.get(val) !== 1);
+  const cards = Array.from(cardCounter.values());
+  const matches = cards.filter((val) => val !== 1);
 
-  if (pairTypes.includes(5)) {
+  if (matches.includes(5)) {
     handType = 6;
-    values.push(pairValues[0]);
-  } else if (pairTypes.includes(4)) {
+  } else if (matches.includes(4)) {
     handType = 5;
-    values.push(pairValues[0]);
-  } else if (pairTypes.includes(3)) {
-    if (pairValues.includes(2)) {
+  } else if (matches.includes(3)) {
+    if (matches.includes(2)) {
       handType = 4;
-      values.push(Math.max(...pairValues));
-      values.push(Math.min(...pairValues));
     } else {
       handType = 3;
-      values.push(pairValues[0]);
     }
-  } else if (pairTypes.includes(2)) {
-    if (pairTypes.length > 1) {
+  } else if (matches.includes(2)) {
+    if (matches.length > 1) {
       handType = 2;
-      values.push(Math.max(...pairValues));
-      values.push(Math.min(...pairValues));
     } else {
       handType = 1;
-      values.push(pairValues[0]);
     }
   }
-
-  values.push(...hand.sort((a, b) => b - a).filter((v) => !values.includes(v)));
 
   return {
     handType,
-    values,
   };
 }
 
+/**
+ * Returns number value of card, given the card face character.
+ */
 function convertToNumber(cardValue: string): number {
   if (/[2-9]/.test(cardValue)) {
     return parseInt(cardValue);
@@ -78,6 +68,7 @@ function convertToNumber(cardValue: string): number {
 }
 
 type Hand = {
+  hand: number[];
   /**
    * - 0: High card
    * - 1: Pair
@@ -88,7 +79,6 @@ type Hand = {
    * - 6: Five-of-a-kind
    */
   handType: number;
-  values: number[];
   bet: number;
 };
 
@@ -103,11 +93,11 @@ export default async function solver(inputFile: string | PathLike): Promise<Day7
   const hands: Hand[] = input
     .map((line) => [...line.split(/\s/g)[0]].map((card) => convertToNumber(card)))
     .map((hand, i) => {
-      const { handType, values } = getHandValue(hand);
+      const { handType } = getHandValue(hand);
 
       return {
+        hand,
         handType,
-        values,
         bet: bets[i],
       };
     });
@@ -120,10 +110,9 @@ export default async function solver(inputFile: string | PathLike): Promise<Day7
         hands[j + 1] = tmp;
       }
       if (hands[j].handType === hands[j + 1].handType) {
-        for (let k = 0; k < hands[j].values.length; ++k) {
-          const firstVal = hands[j].values[k];
-          const secondVal = hands[j + 1].values[k];
-
+        for (let k = 0; k < 5; ++k) {
+          const firstVal = hands[j].hand[k];
+          const secondVal = hands[j + 1].hand[k];
           if (firstVal < secondVal) {
             const tmp = hands[j];
             hands[j] = hands[j + 1];
@@ -137,8 +126,6 @@ export default async function solver(inputFile: string | PathLike): Promise<Day7
       }
     }
   }
-
-  console.log('Sorted hands: ', hands);
 
   const partOneResult = hands.reduce(
     (prev, next, index, arr) => prev + next.bet * (arr.length - index),
