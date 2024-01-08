@@ -1,13 +1,20 @@
 import { readInputFile } from '@helpers/fs';
 import { PathLike } from 'node:fs';
 
+const JOKER_VALUE = 11;
+
 /**
  * @param {number[]} hand Array of numbers that represent the card values.
  * @returns {HandValue}
  */
-function getHandValue(hand: number[]): { handType: number } {
+function getHandValue(
+  hand: number[],
+  jokersWild?: boolean,
+): { handType: number; modifiedHand: number[] | null } {
+  /** Map<`cardValue`: `howManyOfIt`> */
   const cardCounter = new Map<number, number>();
   let handType = 0;
+  let modifiedHand: number[] | null = null;
 
   for (const card of hand) {
     if (cardCounter.has(card)) {
@@ -38,8 +45,98 @@ function getHandValue(hand: number[]): { handType: number } {
     }
   }
 
+  if (jokersWild && hand.includes(JOKER_VALUE)) {
+    switch (handType) {
+      // five of a kind
+      case 6:
+        // assuming 5 Jokers -> make it 5 Aces
+        modifiedHand = new Array(5).fill(14);
+        break;
+      // four of a kind
+      case 5:
+        // turn modified hand to a 5-of-a-kind
+        modifiedHand = hand.map((val) =>
+          val === JOKER_VALUE ? [...cardCounter.keys()].filter((x) => x !== JOKER_VALUE)[0] : val,
+        );
+        break;
+      // full house
+      case 4:
+        // Two cases to handle:
+        // J J J x x
+        // J J x x x
+        // Either way, we make this a 5-of-a-kind with the "x" card.
+        modifiedHand = new Array(5).fill(
+          [...cardCounter.keys()].filter((x) => x !== JOKER_VALUE)[0],
+        );
+        break;
+      // three of a kind
+      case 3:
+        // J J J x y
+        // x x x J y
+        modifiedHand =
+          cardCounter.get(JOKER_VALUE) === 3
+            ? hand.map((val) =>
+                val === JOKER_VALUE
+                  ? Math.max(...[...cardCounter.keys()].filter((x) => x !== JOKER_VALUE))
+                  : val,
+              )
+            : hand.map((val) =>
+                val === JOKER_VALUE
+                  ? [...cardCounter.keys()].filter((x) => cardCounter.get(x) === 3)[0]
+                  : val,
+              );
+        break;
+      case 2:
+        // x x y y J
+        // J J x x y
+        // Dear god this looks awful :)
+        modifiedHand =
+          cardCounter.get(JOKER_VALUE) === 2
+            ? hand.map((val) =>
+                val === JOKER_VALUE
+                  ? [...cardCounter.keys()].filter(
+                      (x) => cardCounter.get(x) === 2 && x !== JOKER_VALUE,
+                    )[0]
+                  : val,
+              )
+            : hand.map((val) =>
+                val === JOKER_VALUE
+                  ? Math.max(...[...cardCounter.keys()].filter((x) => x !== JOKER_VALUE))
+                  : val,
+              );
+        break;
+      case 1:
+        // J J x y z
+        // x x J y z
+        // Dear god this looks awful :)
+        modifiedHand =
+          cardCounter.get(JOKER_VALUE) === 2
+            ? hand.map((val) =>
+                val === JOKER_VALUE
+                  ? Math.max(...[...cardCounter.keys()].filter((x) => x !== JOKER_VALUE))
+                  : val,
+              )
+            : hand.map((val) =>
+                val === JOKER_VALUE
+                  ? [...cardCounter.keys()].filter((x) => cardCounter.get(x) === 2)[0]
+                  : val,
+              );
+        break;
+      case 0:
+        modifiedHand = hand.map((val) =>
+          val === JOKER_VALUE
+            ? Math.max(...[...cardCounter.keys()].filter((x) => x !== JOKER_VALUE))
+            : val,
+        );
+        break;
+      default:
+        throw new Error('wtf');
+    }
+  }
+
   return {
     handType,
+    modifiedHand,
   };
 }
 
@@ -69,6 +166,8 @@ function convertToNumber(cardValue: string): number {
 
 type Hand = {
   hand: number[];
+  modifiedHand?: number[] | null;
+  originalHand?: number[] | null;
   /**
    * - 0: High card
    * - 1: Pair
@@ -82,22 +181,32 @@ type Hand = {
   bet: number;
 };
 
-type Day7Solution = {
-  partOne: number;
-};
+type Day7Solution = number;
 
-export default async function solver(inputFile: string | PathLike): Promise<Day7Solution> {
+export default async function solver(
+  inputFile: string | PathLike,
+  jokersWild?: boolean,
+): Promise<Day7Solution> {
   const input = (await readInputFile(inputFile)).split('\n');
 
   const bets: number[] = input.map((line) => parseInt(line.split(/\s/g)[1], 10));
   const hands: Hand[] = input
     .map((line) => [...line.split(/\s/g)[0]].map((card) => convertToNumber(card)))
     .map((hand, i) => {
-      const { handType } = getHandValue(hand);
+      const { handType, modifiedHand } = getHandValue(hand, jokersWild);
+      let handTypeToUse = handType;
+      let handToUse = hand;
+
+      if (modifiedHand) {
+        handTypeToUse = getHandValue(modifiedHand).handType;
+        handToUse = hand.map((val) => (val === JOKER_VALUE ? 0 : val));
+      }
 
       return {
-        hand,
-        handType,
+        originalHand: hand,
+        hand: handToUse,
+        modifiedHand,
+        handType: handTypeToUse,
         bet: bets[i],
       };
     });
@@ -127,12 +236,13 @@ export default async function solver(inputFile: string | PathLike): Promise<Day7
     }
   }
 
-  const partOneResult = hands.reduce(
+  // Debugging purposes:
+  // console.log(hands);
+
+  const result = hands.reduce(
     (prev, next, index, arr) => prev + next.bet * (arr.length - index),
     0,
   );
 
-  return {
-    partOne: partOneResult,
-  };
+  return result;
 }
