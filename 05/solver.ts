@@ -11,7 +11,7 @@ export default async function (inputFile: string): Promise<Day5ReturnValue> {
     .split(': ')[1]
     .split(' ')
     .map((x) => parseInt(x));
-  // `eslint-disable` here while part two soultion is skipped.
+  // `eslint-disable` here while part two solution is skipped.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const seedySeeds = input[0] // for part two
     .split(': ')[1]
