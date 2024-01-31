@@ -6,8 +6,8 @@ describe('Day 4', () => {
 
   describe('Part One', () => {
     beforeAll(async () => {
-      sampleInputResult = await solver('04/sample1.txt');
-      puzzleInputResult = await solver('04/star.txt');
+      sampleInputResult = await solver('src/2023/04/sample1.txt');
+      puzzleInputResult = await solver('src/2023/04/star.txt');
     });
 
     test('solves correctly with sample input', () => {
@@ -21,8 +21,8 @@ describe('Day 4', () => {
 
   describe('Part Two', () => {
     beforeAll(async () => {
-      sampleInputResult = await solver('04/sample2.txt');
-      puzzleInputResult = await solver('04/star.txt');
+      sampleInputResult = await solver('src/2023/04/sample2.txt');
+      puzzleInputResult = await solver('src/2023/04/star.txt');
     });
 
     test('solves correctly with sample input', () => {
