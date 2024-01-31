@@ -41,7 +41,7 @@ export default async function (inputFile: string): Promise<Day5ReturnValue> {
       .map((y) => y.split(' ').map((z) => parseInt(z))),
   );
   const partOneResult = [];
-  // `eslint-disable` here while part two soultion is skipped.
+  // `eslint-disable` here while part two solution is skipped.
   // eslint-disable-next-line prefer-const
   let partTwoResult = -1;
 
