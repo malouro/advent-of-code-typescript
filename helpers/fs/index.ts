@@ -6,3 +6,5 @@ export async function readInputFile(inputFile: string | PathLike): Promise<strin
 
   return input;
 }
+
+export { PathLike };
