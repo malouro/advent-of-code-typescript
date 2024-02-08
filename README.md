@@ -1,10 +1,6 @@
-# Advent of Code 2023 🎄
-
-> 👨‍💻 _Written in TypeScript._
+# Advent of Code
 
 Advent calendar of code puzzles. (see https://adventofcode.com/)
-
-Happy holidays! ☃️
 
 ## Getting Started
 
@@ -36,6 +32,8 @@ yarn format:fix   # Write fixes for formatting (work in a clean tree)
 ```
 
 ## Progress Tracking
+
+### 2023
 
 |  sun   |  mon   |  tues  |  wed   |  thu   | fri  |  sat   |
 | :----: | :----: | :----: | :----: | :----: | :--: | :----: |
