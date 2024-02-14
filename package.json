@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node index.ts",
+    "cli": "node -r ts-node/register --env-file=.env cli",
     "test": "jest",
     "lint": "eslint .",
     "format:check": "prettier . --check",
@@ -12,14 +13,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/malouro/advent-of-code-2023.git"
+    "url": "git+https://github.com/malouro/advent-of-code-typescript.git"
   },
   "author": "Mike Louro",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/malouro/advent-of-code-2023/issues"
-  },
-  "homepage": "https://github.com/malouro/advent-of-code-2023#readme",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.4.1",
     "@types/babel__core": "^7.20.5",
@@ -34,10 +30,10 @@
     "prettier": "^3.1.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.2",
-    "yargs": "^17.7.2"
+    "typescript": "^5.3.2"
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "yargs": "^17.7.2"
   }
 }
