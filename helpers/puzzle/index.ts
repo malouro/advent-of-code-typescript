@@ -37,7 +37,11 @@ export async function getPuzzleInput(
 
 export function getPuzzlePath(year: number, day: number, fileName?: string) {
   const dayStr = day > 9 ? `${day}` : `0${day}`;
-  return resolvePath(__dirname, `./src/${year}/${dayStr}${fileName ? '/' + fileName : ''}`);
+  return resolvePath(
+    __dirname,
+    '../../',
+    `./src/${year}/${dayStr}${fileName ? '/' + fileName : ''}`,
+  );
 }
 
 export function puzzleToMarkdown(input: string) {
