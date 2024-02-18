@@ -61,3 +61,66 @@ export async function saveToFile(input: string, outputPath: string): Promise<voi
     console.info(`[SUCCESS] Wrote content to "${outputPath}".`);
   });
 }
+
+export async function makeSolutionBoilerPlate(year: number, day: number) {
+  const srcFilePath = getPuzzlePath(year, day, 'solver.ts');
+  const testFilePath = getPuzzlePath(year, day, 'solver.test.ts');
+  const d = day.toString();
+  const cleanDay = d[0] === '0' ? d.substring(1, d.length) : d;
+
+  if (existsSync(srcFilePath)) {
+    console.warn(`[WARN] File at location "${srcFilePath}" already exists. Skipping...`);
+  } else {
+    const srcContent = `import { readInputFile, FsPathLike } from '@helpers/fs';
+
+type Day${cleanDay}Solution = {
+  partOne: any;
+  partTwo: any;
+};
+
+export default async function solver(inputFile: string | FsPathLike): Promise<Day${cleanDay}Solution> {
+  const input = (await readInputFile(inputFile)).split('\\n').filter((line) => line !== '');
+
+  return {
+    partOne: null,
+    partTwo: null,
+  }
+}
+`;
+    await writeFile(srcFilePath, srcContent, 'utf-8').then(() => {
+      console.info(`[SUCCESS] Wrote content to "${srcFilePath}".`);
+    });
+  }
+
+  if (existsSync(testFilePath)) {
+    console.warn(`[WARN] File at location "${srcFilePath}" already exists. Skipping...`);
+  } else {
+    const testContent = `import solver from './solver';
+
+describe('Day ${cleanDay}', () => {
+  describe('Part One', () => {
+    test('solves correctly with sample input', async () => {
+      expect(await solver('src/${year}/${day}/sample1.txt')).toBe(0);
+    });
+
+    test('solves correctly with puzzle input', async () => {
+      expect(await solver('src/${year}/${day}/star.txt')).toBe(0);
+    });
+  });
+
+  describe('Part Two', () => {
+    test('solves correctly with sample input', async () => {
+      expect(await solver('src/${year}/${day}/sample1.txt')).toBe(0);
+    });
+
+    test('solves correctly with puzzle input', async () => {
+      expect(await solver('src/${year}/${day}/star.txt')).toBe(0);
+    });
+  });
+});
+`;
+    await writeFile(testFilePath, testContent, 'utf-8').then(() => {
+      console.info(`[SUCCESS] Wrote content to "${testFilePath}".`);
+    });
+  }
+}

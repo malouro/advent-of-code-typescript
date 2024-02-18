@@ -1,4 +1,4 @@
-import { readInputFile, PathLike } from '@helpers/fs';
+import { readInputFile, FsPathLike } from '@helpers/fs';
 
 const START = 'AAA';
 const END = 'ZZZ';
@@ -9,7 +9,7 @@ type Day8Solution = {
   partOne: number;
 };
 
-export default async function solver(inputFile: string | PathLike): Promise<Day8Solution> {
+export default async function solver(inputFile: string | FsPathLike): Promise<Day8Solution> {
   const input = (await readInputFile(inputFile)).split('\n').filter((line) => line !== '');
 
   const instructions = input.splice(0, 1)[0];
