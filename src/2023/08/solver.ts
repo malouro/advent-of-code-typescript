@@ -1,4 +1,5 @@
 import { readInputFile, FsPathLike } from '@helpers/fs';
+import { lcm } from '@helpers/math';
 
 const START = 'AAA';
 const END = 'ZZZ';
@@ -6,9 +7,6 @@ const LEFT = 'L';
 const RIGHT = 'R';
 const START_CHAR = 'A';
 const END_CHAR = 'Z';
-
-const gcd = (a: number, b: number): number => (a ? gcd(b % a, a) : b);
-const lcm = (a: number, b: number): number => (a * b) / gcd(a, b);
 
 type Day8Solution = {
   path: string[];
