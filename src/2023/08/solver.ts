@@ -4,43 +4,78 @@ const START = 'AAA';
 const END = 'ZZZ';
 const LEFT = 'L';
 const RIGHT = 'R';
+const START_CHAR = 'A';
+const END_CHAR = 'Z';
+
+const gcd = (a: number, b: number): number => (a ? gcd(b % a, a) : b);
+const lcm = (a: number, b: number): number => (a * b) / gcd(a, b);
 
 type Day8Solution = {
-  partOne: number;
+  path: string[];
+  length: number;
 };
+type PartToSolve = 1 | 2;
 
-export default async function solver(inputFile: string | FsPathLike): Promise<Day8Solution> {
+export default async function solver(
+  inputFile: string | FsPathLike,
+  partToSolve: PartToSolve = 1,
+): Promise<Day8Solution> {
   const input = (await readInputFile(inputFile)).split('\n').filter((line) => line !== '');
 
   const instructions = input.splice(0, 1)[0];
   const nodes = input.map((line) => {
-    const [nodeName, left, right] = [...line.matchAll(/[A-Z]+/g)];
+    const [nodeName, left, right] = [...line.matchAll(/[A-Z1-9]+/g)];
 
     return { nodeName: nodeName[0], branches: [left[0], right[0]] };
   });
 
-  let currentNode = START;
-  let index = 0;
   const path = [];
+  let partTwoLength = 0;
+  let index = 0;
 
-  while (currentNode !== END) {
-    const node = nodes.find(({ nodeName }) => nodeName === currentNode);
-    const currentInstruction = instructions[index % instructions.length];
+  if (partToSolve === 1) {
+    let currentNode = START;
+    while (currentNode !== END) {
+      const node = nodes.find(({ nodeName }) => nodeName === currentNode);
+      const currentInstruction = instructions[index % instructions.length];
 
-    if (currentInstruction === LEFT) {
-      currentNode = node?.branches[0] as string;
-      path.push(LEFT);
-    } else if (currentInstruction === RIGHT) {
-      currentNode = node?.branches[1] as string;
-      path.push(RIGHT);
+      if (currentInstruction === LEFT) {
+        currentNode = node?.branches[0] as string;
+        path.push(LEFT);
+      } else if (currentInstruction === RIGHT) {
+        currentNode = node?.branches[1] as string;
+        path.push(RIGHT);
+      }
+
+      ++index;
     }
+  } else {
+    const startNodes = nodes.filter(({ nodeName }) => nodeName.charAt(2) === START_CHAR);
+    const pathLengths = startNodes.map((n) => {
+      let currentNode = n.nodeName;
+      const currentPath = [];
+      while (currentNode.charAt(2) !== END_CHAR) {
+        const currentInstruction = instructions[index % instructions.length];
+        const node = nodes.find(({ nodeName }) => nodeName === currentNode);
 
-    index++;
+        if (currentInstruction === LEFT) {
+          currentNode = node?.branches[0] as string;
+          currentPath.push(LEFT);
+        } else if (currentInstruction === RIGHT) {
+          currentNode = node?.branches[1] as string;
+          currentPath.push(RIGHT);
+        }
+
+        ++index;
+      }
+      return currentPath.length;
+    });
+
+    partTwoLength = pathLengths.reduce(lcm);
   }
 
-  console.log(path);
-
   return {
-    partOne: path.length,
+    path,
+    length: partToSolve === 1 ? path.length : partTwoLength,
   };
 }
