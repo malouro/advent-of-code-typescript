@@ -16,15 +16,19 @@ type PuzzleOptions = {
 };
 
 const defaultOptions = (y: Argv) => {
-  y.option('year', {
-    alias: 'y',
-    type: 'number',
-    description: 'Year for the Advent of Code puzzle',
-    default: process.env.AOC_YEAR ?? new Date().getFullYear(),
-  }).option('day', {
-    alias: 'd',
-    type: 'number',
-    description: 'Day of puzzle in given year',
+  y.env('AOC').options({
+    year: {
+      alias: ['y'],
+      type: 'number',
+      description: 'Year for the Advent of Code puzzle',
+      demandOption: true,
+    },
+    day: {
+      alias: ['d'],
+      type: 'number',
+      description: 'Day of puzzle in given year',
+      demandOption: true,
+    },
   });
 };
 

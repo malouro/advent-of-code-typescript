@@ -79,7 +79,7 @@ type Day${cleanDay}Solution = {
 };
 
 export default async function solver(inputFile: string | FsPathLike): Promise<Day${cleanDay}Solution> {
-  const input = (await readInputFile(inputFile)).split('\\n').filter((line) => line !== '');
+  const input = (await readInputFile(inputFile)).split('\\n');
 
   return {
     partOne: null,
