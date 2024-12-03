@@ -1,7 +1,7 @@
 {
-  "name": "advent-of-code-2023",
+  "name": "advent-of-code-typescript",
   "version": "1.0.0",
-  "description": "Advent of Code 2023 Problems & Solutions",
+  "description": "Advent of Code problems & solutions; using TypeScript!",
   "license": "MIT",
   "main": "index.js",
   "scripts": {

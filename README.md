@@ -13,7 +13,7 @@ Advent calendar of code puzzles. (see https://adventofcode.com/)
 ### Pulling down puzzles
 
 ```sh
-yarn cli get-puzzle --year {YEAR} --day {DAY}
+npm run cli get-puzzle -- --year {YEAR} --day {DAY}
 ```
 
 This will pull down the puzzle prompt as a `readme.md` file, and set up some quick solution boilerplate code:
@@ -21,9 +21,9 @@ This will pull down the puzzle prompt as a `readme.md` file, and set up some qui
 **Pre-reqs:**
 
 - Requries a `AOC_SECRET` token.
-  1. Authenticate on the AoC site, and examine the session token from the browser devtools network tab (looks like `session="TOKEN HERE"`) in the request headers.
+  1. Authenticate on the AoC site, and examine the session token from the browser devtools network tab (looks like `session="TOKEN HERE"`), in the cookies section.
   2. Add this token into a `.env` file, or pass as an env variable.
-  3. Now you can run any of the `yarn cli` commands. 🙂
+  3. Now you can run any of the `npm run cli` commands. 🙂
 
 **Additionally:**
 
@@ -34,21 +34,21 @@ This will pull down the puzzle prompt as a `readme.md` file, and set up some qui
 
 ```sh
 # Run all tests
-yarn test
+npm test
 # Run watch mode; test as you code
-yarn test --watch
+npm test --watch
 # Run a specific day's tests
-yarn test ./$DAY_NUMBER
+npm test ./$DAY_NUMBER
 ```
 
 ### Linting & Formatting
 
 ```sh
 # Lint
-yarn lint
+npm run lint
 # Format
-yarn format:check # Check if formatting is good
-yarn format:fix   # Write fixes for formatting (work in a clean tree)
+npm run format:check # Check if formatting is good
+npm run format:fix   # Write fixes for formatting (work in a clean tree)
 ```
 
 ## Progress Tracking
