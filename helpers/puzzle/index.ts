@@ -67,6 +67,7 @@ export async function makeSolutionBoilerPlate(year: number, day: number) {
   const testFilePath = getPuzzlePath(year, day, 'solver.test.ts');
   const d = day.toString();
   const cleanDay = d[0] === '0' ? d.substring(1, d.length) : d;
+  const dirtyDay = d[0] !== '0' && d.length === 1 ? `0${d}` : d;
 
   if (existsSync(srcFilePath)) {
     console.warn(`[WARN] File at location "${srcFilePath}" already exists. Skipping...`);
@@ -100,21 +101,21 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
 describe('Day ${cleanDay}', () => {
   describe('Part One', () => {
     test('solves correctly with sample input', async () => {
-      expect((await solver('src/${year}/${day}/sample1.txt')).partOne).toBe(0);
+      expect((await solver('src/${year}/${dirtyDay}/sample1.txt')).partOne).toBe(0);
     });
 
     test('solves correctly with puzzle input', async () => {
-      expect((await solver('src/${year}/${day}/star.txt')).partOne).toBe(0);
+      expect((await solver('src/${year}/${dirtyDay}/star.txt')).partOne).toBe(0);
     });
   });
 
   describe('Part Two', () => {
     test('solves correctly with sample input', async () => {
-      expect((await solver('src/${year}/${day}/sample1.txt')).partTwo).toBe(0);
+      expect((await solver('src/${year}/${dirtyDay}/sample1.txt')).partTwo).toBe(0);
     });
 
     test('solves correctly with puzzle input', async () => {
-      expect((await solver('src/${year}/${day}/star.txt')).partTwo).toBe(0);
+      expect((await solver('src/${year}/${dirtyDay}/star.txt')).partTwo).toBe(0);
     });
   });
 });

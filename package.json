@@ -5,8 +5,10 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node index.ts",
-    "cli": "node -r ts-node/register --env-file=.env cli",
+    "start": "node ./dist/cli.js",
+    "cli": "node --experimental-strip-types -r tsconfig-paths/register --env-file=.env cli.ts",
+    "build": "tsc --outDir dist && cp -r ./src/**/*.txt ./dist/",
+    "clean": "rm -rf dist",
     "test": "jest",
     "lint": "eslint .",
     "format:check": "prettier . --check",
@@ -19,22 +21,23 @@
   "author": "Mike Louro",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.4.1",
-    "@types/babel__core": "^7.20.5",
     "@types/jest": "^29.5.10",
-    "@types/lodash": "^4.14.202",
-    "@types/node": "^20.10.6",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.13.1",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^9.1.0",
     "jest": "^29.7.0",
     "prettier": "^3.1.0",
-    "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.2"
+    "ts-jest": "^29.1.1"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.202",
+    "@types/node": "^24.0.0",
+    "dotenv": "^17.2.3",
     "lodash": "^4.17.21",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.2",
     "yargs": "^17.7.2"
   }
 }

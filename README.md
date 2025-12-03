@@ -54,7 +54,7 @@ npm run format:fix   # Write fixes for formatting (work in a clean tree)
 ## Progress Tracking
 
 <details>
-<summary>2023</summary>
+<summary>2025</summary>
 
 |  sun   |  mon   |  tues  |  wed   |  thu   |  fri   |  sat   |
 | :----: | :----: | :----: | :----: | :----: | :----: | :----: |
