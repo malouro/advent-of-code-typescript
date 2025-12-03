@@ -7,7 +7,7 @@ Advent calendar of code puzzles. (see https://adventofcode.com/)
 ### Installation & setup
 
 ```sh
-(nvm use || echo "NVM not found; make sure your Node version is $(cat .nvmrc)") && yarn install
+(nvm use || echo "NVM not found; make sure your Node version is $(cat .nvmrc)") && npm install
 ```
 
 ### Pulling down puzzles
