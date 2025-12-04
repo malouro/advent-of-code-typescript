@@ -2,7 +2,7 @@ import solver from './solver';
 
 describe('Day 1', () => {
   describe('Part One', () => {
-    test.skip('solves correctly with sample input', async () => {
+    test('solves correctly with sample input', async () => {
       expect((await solver('src/2025/01/sample1.txt')).partOne).toBe(3);
     });
 
@@ -12,12 +12,12 @@ describe('Day 1', () => {
   });
 
   describe('Part Two', () => {
-    test.skip('solves correctly with sample input', async () => {
+    test('solves correctly with sample input', async () => {
       expect((await solver('src/2025/01/sample1.txt')).partTwo).toBe(6);
     });
 
     test('solves correctly with puzzle input', async () => {
-      expect((await solver('src/2025/01/star.txt')).partTwo).toBe(0);
+      expect((await solver('src/2025/01/star.txt')).partTwo).toBe(6558);
     });
   });
 });
