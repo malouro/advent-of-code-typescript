@@ -24,7 +24,7 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
     const dialTicks = val % 100;
 
     let trackingPos = currentPos;
-    
+
     // If we're starting at 0, a change will trigger a code block below,
     // but not necessarily mean we pass 0. We're starting at zero already.
     const startingAt0Offset = currentPos === 0 ? 0 : 1;
@@ -38,7 +38,6 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
     }
 
     let newPos = trackingPos;
-    let turnChangeMade = false;
 
     if (trackingPos < 0) {
       // We went negative, meaning we potentially passed zero.
@@ -46,23 +45,18 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
       // and add any extra turns from the hundreds place
       code2 += (extraTurns + startingAt0Offset);
       newPos = 100 + trackingPos; // 100 - mod100 value change
-      turnChangeMade = true;
     } else if (trackingPos > 100) {
       // We went passed 100, and therefore hit zero
       code2 += (extraTurns + startingAt0Offset);
       newPos = trackingPos % 100;
-      turnChangeMade = true;
     } else if (trackingPos === 100 || trackingPos === 0) {
       // We hit zero or 100 exactly, new position is 0
       code1++;
       code2 += extraTurns + 1;
       newPos = 0;
-      turnChangeMade = true;
-    }
-
-    // Let's not forget to count in the hundreds place that we dropped before
-    // Those are full turns to add to the counter!
-    if (extraTurns > 0 && !turnChangeMade) {
+    } else if (extraTurns > 0) {
+      // Let's not forget to count in the hundreds place that we dropped before
+      // Those are full turns to add to the counter!
       code2 += extraTurns;
     }
 
