@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./dist/cli.js",
-    "cli": "node --experimental-strip-types -r tsconfig-paths/register --env-file=.env cli.ts",
-    "build": "tsc --outDir dist && cp -r ./src/**/*.txt ./dist/",
+    "cli": "node -r ts-node/register -r tsconfig-paths/register --env-file=.env cli.ts",
+    "build": "tsc --outDir dist ",
     "clean": "rm -rf dist",
     "test": "jest",
     "lint": "eslint .",
