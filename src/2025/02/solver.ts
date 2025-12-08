@@ -1,9 +1,8 @@
 import { readInputFile, FsPathLike } from '@helpers/fs';
-import { number } from 'yargs';
 
 type Day2Solution = {
-  partOne: any;
-  partTwo: any;
+  partOne: number;
+  partTwo: number;
 };
 
 // AUTHOR NOTE:
@@ -17,8 +16,8 @@ export function isInvalid(input: number) {
   const invalidSubstringSize = 2;
 
   for (let i = 0; i < val.length; i++) {
-    const sub = val.substring(0, i)
-    const regex = new RegExp(`^(${sub}){${invalidSubstringSize}}$`)
+    const sub = val.substring(0, i);
+    const regex = new RegExp(`^(${sub}){${invalidSubstringSize}}$`);
     const matches = regex.exec(val);
 
     if (Array.isArray(matches) && matches.length > 0) {
@@ -27,19 +26,17 @@ export function isInvalid(input: number) {
       }
     }
   }
-  return false
+  return false;
 }
 
-/**
- * Good news, the regex method applies itself for part two :)
- * It is, however, super slow - as expected. :(
- */
+// Good news, the regex method applies itself for part two :)
+// It is, however, super slow - as expected. :(
 export function isInvalidPartTwo(input: number) {
   const val = input.toString();
 
   for (let i = 0; i < val.length; i++) {
-    const sub = val.substring(0, i)
-    const regex = new RegExp(`^(${sub})+$`)
+    const sub = val.substring(0, i);
+    const regex = new RegExp(`^(${sub})+$`);
     const matches = regex.exec(val);
 
     if (Array.isArray(matches) && matches.length > 0) {
@@ -48,17 +45,17 @@ export function isInvalidPartTwo(input: number) {
       }
     }
   }
-  return false
+  return false;
 }
 
 export default async function solver(inputFile: string | FsPathLike): Promise<Day2Solution> {
   const input = (await readInputFile(inputFile)).split(',');
-  const ranges = input.map((str) => str.split('-'))
+  const ranges = input.map((str) => str.split('-'));
 
-  const valid_1: number[] = []
-  const invalid_1: number[] = []
-  const valid_2: number[] = []
-  const invalid_2: number[] = []
+  const valid_1: number[] = [];
+  const invalid_1: number[] = [];
+  const valid_2: number[] = [];
+  const invalid_2: number[] = [];
 
   ranges.forEach((range) => {
     const start = parseInt(range[0], 10);
@@ -66,15 +63,15 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
 
     for (let i = start; i <= end; i++) {
       if (isInvalid(i)) {
-        invalid_1.push(i)
+        invalid_1.push(i);
       } else {
-        valid_1.push(i)
+        valid_1.push(i);
       }
 
       if (isInvalidPartTwo(i)) {
-        invalid_2.push(i)
+        invalid_2.push(i);
       } else {
-        valid_2.push(i)
+        valid_2.push(i);
       }
     }
   });
@@ -83,7 +80,7 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
   // console.log('VALID: ', valid_2, '\n\n', 'INVALID: ', invalid_2)
 
   return {
-    partOne: invalid_1.reduce((prev, cur, i) => prev + cur, 0),
-    partTwo: invalid_2.reduce((prev, cur, i) => prev + cur, 0),
-  }
+    partOne: invalid_1.reduce((prev, cur) => prev + cur, 0),
+    partTwo: invalid_2.reduce((prev, cur) => prev + cur, 0),
+  };
 }

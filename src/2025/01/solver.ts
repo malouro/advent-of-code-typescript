@@ -1,17 +1,20 @@
 import { readInputFile, FsPathLike } from '@helpers/fs';
 
 type Day1Solution = {
-  partOne: any;
-  partTwo: any;
+  partOne: number;
+  partTwo: number;
 };
 
 const initialPosition = 50;
 
-type Direction = 'L' | 'R'
+type Direction = 'L' | 'R';
 
 export default async function solver(inputFile: string | FsPathLike): Promise<Day1Solution> {
   const input = (await readInputFile(inputFile)).split('\n');
-  const permutations = input.map((str: string) => ({ direction: str.charAt(0) as Direction, value: str.slice(1) }))
+  const permutations = input.map((str: string) => ({
+    direction: str.charAt(0) as Direction,
+    value: str.slice(1),
+  }));
 
   let currentPos = initialPosition;
 
@@ -43,11 +46,11 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
       // We went negative, meaning we potentially passed zero.
       // Add the zero offset to the counter (+1 if we weren't starting at zero already)
       // and add any extra turns from the hundreds place
-      code2 += (extraTurns + startingAt0Offset);
+      code2 += extraTurns + startingAt0Offset;
       newPos = 100 + trackingPos; // 100 - mod100 value change
     } else if (trackingPos > 100) {
       // We went passed 100, and therefore hit zero
-      code2 += (extraTurns + startingAt0Offset);
+      code2 += extraTurns + startingAt0Offset;
       newPos = trackingPos % 100;
     } else if (trackingPos === 100 || trackingPos === 0) {
       // We hit zero or 100 exactly, new position is 0
@@ -75,5 +78,5 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
   return {
     partOne: code1,
     partTwo: code2,
-  }
+  };
 }
