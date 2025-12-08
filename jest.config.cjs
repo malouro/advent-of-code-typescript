@@ -12,6 +12,6 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'json', 'txt'],
   moduleNameMapper: {
-    "@helpers/(.*)": "<rootDir>/helpers/$1"
-  }
+    '@helpers/(.*)': '<rootDir>/helpers/$1',
+  },
 };

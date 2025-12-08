@@ -13,5 +13,5 @@
       "@helpers/*": ["helpers/*"]
     }
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts"]
 }

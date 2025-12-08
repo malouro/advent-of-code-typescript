@@ -6,7 +6,9 @@ type Day3Solution = {
   partTwo: number;
 };
 
-export async function partOneSolver(inputFile: string | FsPathLike): Promise<Day3Solution['partOne']> {
+export async function partOneSolver(
+  inputFile: string | FsPathLike,
+): Promise<Day3Solution['partOne']> {
   const batteryBanks: string[] = (await readInputFile(inputFile)).split('\n');
   const largestJoltagePairs: number[] = [];
 
@@ -37,7 +39,12 @@ export async function partOneSolver(inputFile: string | FsPathLike): Promise<Day
   return largestJoltagePairs.reduce((prev, cur) => prev + cur, 0);
 }
 
-function recurse(maxNumberNeeded: number, numberNeeded: number, batteryBank: number[], output: number[]) {
+function recurse(
+  maxNumberNeeded: number,
+  numberNeeded: number,
+  batteryBank: number[],
+  output: number[],
+) {
   if (output.length === maxNumberNeeded) {
     return output;
   }
@@ -59,19 +66,24 @@ function recurse(maxNumberNeeded: number, numberNeeded: number, batteryBank: num
     maxNumberNeeded,
     maxNumberNeeded - output.length,
     [...batteryBank.slice(largestIndex + 1)],
-    output
+    output,
   );
 }
 
-export async function partTwoSolver(inputFile: string | FsPathLike): Promise<Day3Solution['partTwo']> {
+export async function partTwoSolver(
+  inputFile: string | FsPathLike,
+): Promise<Day3Solution['partTwo']> {
   const numberOfBatteriesNeeded = 12;
   const batteryBanks: string[] = (await readInputFile(inputFile)).split('\n');
   const joltages: number[] = [];
 
   batteryBanks.forEach((bank) => {
     const joltage = recurse(
-      numberOfBatteriesNeeded, numberOfBatteriesNeeded, [...bank].map((v) => parseInt(v, 10)), []
-    ).reduce((s, n) => s.toString() + n.toString(), '')
+      numberOfBatteriesNeeded,
+      numberOfBatteriesNeeded,
+      [...bank].map((v) => parseInt(v, 10)),
+      [],
+    ).reduce((s, n) => s.toString() + n.toString(), '');
 
     joltages.push(parseInt(joltage, 10));
   });
