@@ -10,7 +10,6 @@ export default async function (inputFile: string | PathLike): Promise<number> {
     let firstDigit = null;
     let lastDigit = null;
 
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < line.length; i++) {
       if (/\d/.test(line[i])) {
         firstDigit = line[i];
