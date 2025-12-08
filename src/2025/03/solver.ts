@@ -3,7 +3,7 @@ import { readInputFile, FsPathLike } from '@helpers/fs';
 
 type Day3Solution = {
   partOne: number;
-  partTwo: any;
+  partTwo: number;
 };
 
 export async function partOneSolver(inputFile: string | FsPathLike): Promise<Day3Solution['partOne']> {
@@ -41,10 +41,8 @@ function recurse(maxNumberNeeded: number, numberNeeded: number, batteryBank: num
   if (output.length === maxNumberNeeded) {
     return output;
   }
+
   const bankToCheck = [...batteryBank.slice(0, batteryBank.length - numberNeeded + 1)];
-
-  // console.info('Bank to check: ', bankToCheck);
-
   let largest = 0;
   let largestIndex = 0;
 
@@ -57,13 +55,16 @@ function recurse(maxNumberNeeded: number, numberNeeded: number, batteryBank: num
 
   output.push(largest);
 
-  const nextBankToCheck = [...batteryBank.slice(largestIndex + 1)];
-
-  return recurse(maxNumberNeeded, maxNumberNeeded - output.length, nextBankToCheck, output);
+  return recurse(
+    maxNumberNeeded,
+    maxNumberNeeded - output.length,
+    [...batteryBank.slice(largestIndex + 1)],
+    output
+  );
 }
 
 export async function partTwoSolver(inputFile: string | FsPathLike): Promise<Day3Solution['partTwo']> {
-  let numberOfBatteriesNeeded = 12;
+  const numberOfBatteriesNeeded = 12;
   const batteryBanks: string[] = (await readInputFile(inputFile)).split('\n');
   const joltages: number[] = [];
 
