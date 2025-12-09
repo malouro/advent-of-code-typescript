@@ -107,7 +107,7 @@ async function detectPuzzleStructure(year: number, day: number) {
   const partTwoPath = join(dayPath, 'partTwo.js');
 
   // Check for input files
-  const possibleInputs = ['star.txt', 'test.txt', 'sample1.txt', 'sample.txt'];
+  const possibleInputs = ['star.txt'];
   let inputFile = null;
 
   for (const input of possibleInputs) {
@@ -253,7 +253,7 @@ const parser = yargs(hideBin(process.argv))
     }
   })
   .command(
-    'get-puzzle',
+    'get',
     'Get puzzle input for a Year/Day.',
     defaultOptions,
     async ({ year, day }: ArgumentsCamelCase<PuzzleOptions>) => {
@@ -268,7 +268,7 @@ const parser = yargs(hideBin(process.argv))
     },
   )
   .command(
-    'solve-puzzle',
+    'solve',
     'Submit solution for a Year/Day.',
     defaultOptions,
     ({ year, day }: ArgumentsCamelCase<PuzzleOptions>) => {

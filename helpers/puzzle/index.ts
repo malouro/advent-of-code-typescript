@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { basename, resolve as resolvePath } from 'node:path';
 
 const { AOC_SECRET } = process.env;
@@ -101,7 +101,7 @@ export default async function solver(inputFile: string | FsPathLike): Promise<Da
 describe('Day ${cleanDay}', () => {
   describe('Part One', () => {
     test('solves correctly with sample input', async () => {
-      expect((await solver('src/${year}/${dirtyDay}/sample1.txt')).partOne).toBe(0);
+      expect((await solver('src/${year}/${dirtyDay}/fixtures/sample.txt')).partOne).toBe(0);
     });
 
     test('solves correctly with puzzle input', async () => {
@@ -111,7 +111,7 @@ describe('Day ${cleanDay}', () => {
 
   describe('Part Two', () => {
     test('solves correctly with sample input', async () => {
-      expect((await solver('src/${year}/${dirtyDay}/sample1.txt')).partTwo).toBe(0);
+      expect((await solver('src/${year}/${dirtyDay}/fixtures/sample.txt')).partTwo).toBe(0);
     });
 
     test('solves correctly with puzzle input', async () => {
@@ -123,5 +123,33 @@ describe('Day ${cleanDay}', () => {
     await writeFile(testFilePath, testContent, 'utf-8').then(() => {
       console.info(`[SUCCESS] Wrote content to "${testFilePath}".`);
     });
+    await mkdir(getPuzzlePath(year, day, 'fixtures')).catch(() => {
+      console.error(`[ERROR] Could not create fixtures directory at "${getPuzzlePath(year, day)}fixtures".`);
+    }).then(() => {
+      console.info(`[SUCCESS] Created test fixtures directory at "${getPuzzlePath(year, day)}fixtures".`);
+    });
+
+    await writeFile(
+      getPuzzlePath(year, day, 'fixtures/sample.txt'),
+      '',
+      'utf-8',
+    ).then(() => {
+      console.info(
+        `[SUCCESS] Wrote empty sample input file to "${getPuzzlePath(year, day, 'fixtures/sample.txt')}".`,
+      );
+    });
+
+    if (existsSync(getPuzzlePath(year, day, 'readme.md'))) {
+      const readmeContent = await readFile(getPuzzlePath(year, day, 'readme.md'), 'utf-8');
+      const codeSampleBlock = /<pre>\s*<code>((.|\n)*)<\/code><\/pre>/gm.exec(readmeContent);
+
+      if (codeSampleBlock && codeSampleBlock.length > 1) {
+        await writeFile(getPuzzlePath(year, day, 'fixtures/sample.txt'), codeSampleBlock[1], 'utf-8').then(() => {
+          console.info(`[SUCCESS] Wrote sample input file to "${getPuzzlePath(year, day, 'fixtures/sample.txt')}".`);
+        });
+      } else {
+        console.warn(`[WARN] No code sample block found in "${getPuzzlePath(year, day, 'readme.md')}". Keeping sample input file empty...`);
+      }
+    }
   }
 }

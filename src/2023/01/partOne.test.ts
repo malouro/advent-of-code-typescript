@@ -13,7 +13,7 @@ describe('Day 1', () => {
 
   describe.skip('Testing sandbox', () => {
     test('solves correctly', async () => {
-      expect(await solver('src/2023/01/test.txt')).toEqual(44);
+      expect(await solver('src/2023/01/unit-test.txt')).toEqual(44);
     });
   });
 });
