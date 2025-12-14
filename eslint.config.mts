@@ -12,5 +12,18 @@ export default defineConfig([
     plugins: { js, ts },
     extends: ['js/recommended', 'ts/recommended'],
     languageOptions: { globals: globals.node },
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
   },
 ]);
