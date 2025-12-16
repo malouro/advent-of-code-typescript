@@ -16,8 +16,12 @@ describe('Day 6', () => {
       expect(await solvePartTwo('src/2025/06/fixtures/sample.txt')).toBe(3263827);
     });
 
+    test('solves with my own input', async () => {
+      expect(await solvePartTwo('src/2025/06/fixtures/part_two_sample.txt')).toBe(62267);
+    });
+
     test('solves correctly with puzzle input', async () => {
-      expect(await solvePartTwo('src/2025/06/star.txt')).toBe(0);
+      expect(await solvePartTwo('src/2025/06/star.txt')).toBe(11159825706149);
     });
   });
 });

@@ -9,8 +9,8 @@ type Operands = number[][];
 type Operators = string[];
 
 async function handleInputPartOne(inputFile: string | FsPathLike): Promise<{
-  operands: number[][];
-  operators: string[];
+  operands: Operands;
+  operators: Operators;
 }> {
   const input = (await readInputFile(inputFile)).split('\n');
   let operands: number[][] = [];
@@ -43,9 +43,10 @@ async function handleInputPartOne(inputFile: string | FsPathLike): Promise<{
   return { operands, operators };
 }
 
-async function handleInputPartTwo(
-  inputFile: string | FsPathLike,
-): Promise<{ operands: Operands; operators: Operators }> {
+async function handleInputPartTwo(inputFile: string | FsPathLike): Promise<{
+  operands: Operands;
+  operators: Operators;
+}> {
   const input = (await readInputFile(inputFile)).split('\n');
   let operators: Operators = [];
   let operatorIndex = 0;
@@ -98,8 +99,8 @@ async function handleInputPartTwo(
     }
   }
 
-  console.log(done);
-  console.log(operators);
+  // console.log(done);
+  // console.log(operators);
 
   return {
     operands: done,
