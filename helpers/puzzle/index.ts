@@ -123,19 +123,21 @@ describe('Day ${cleanDay}', () => {
     await writeFile(testFilePath, testContent, 'utf-8').then(() => {
       console.info(`[SUCCESS] Wrote content to "${testFilePath}".`);
     });
-    await mkdir(getPuzzlePath(year, day, 'fixtures')).catch(() => {
-      console.error(`[ERROR] Could not create fixtures directory at "${getPuzzlePath(year, day)}fixtures".`);
-    }).then(() => {
-      console.info(`[SUCCESS] Created test fixtures directory at "${getPuzzlePath(year, day)}fixtures".`);
-    });
+    await mkdir(getPuzzlePath(year, day, 'fixtures'))
+      .catch(() => {
+        console.error(
+          `[ERROR] Could not create fixtures directory at "${getPuzzlePath(year, day)}fixtures".`,
+        );
+      })
+      .then(() => {
+        console.info(
+          `[SUCCESS] Created test fixtures directory at "${getPuzzlePath(year, day)}fixtures".`,
+        );
+      });
 
-    await writeFile(
-      getPuzzlePath(year, day, 'fixtures/sample.txt'),
-      '',
-      'utf-8',
-    ).then(() => {
+    await writeFile(getPuzzlePath(year, day, 'fixtures/sample.txt'), '', 'utf-8').then(() => {
       console.info(
-        `[SUCCESS] Wrote empty sample input file to "${getPuzzlePath(year, day, 'fixtures/sample.txt')}".`,
+        `[SUCCESS] Made empty sample input file at "${getPuzzlePath(year, day, 'fixtures/sample.txt')}". Attempting to get sample input from problem...`,
       );
     });
 
@@ -144,11 +146,19 @@ describe('Day ${cleanDay}', () => {
       const codeSampleBlock = /<pre>\s*<code>((.|\n)*)<\/code><\/pre>/gm.exec(readmeContent);
 
       if (codeSampleBlock && codeSampleBlock.length > 1) {
-        await writeFile(getPuzzlePath(year, day, 'fixtures/sample.txt'), codeSampleBlock[1], 'utf-8').then(() => {
-          console.info(`[SUCCESS] Wrote sample input file to "${getPuzzlePath(year, day, 'fixtures/sample.txt')}".`);
+        await writeFile(
+          getPuzzlePath(year, day, 'fixtures/sample.txt'),
+          codeSampleBlock[1],
+          'utf-8',
+        ).then(() => {
+          console.info(
+            `[SUCCESS] Wrote sample input into "${getPuzzlePath(year, day, 'fixtures/sample.txt')}".`,
+          );
         });
       } else {
-        console.warn(`[WARN] No code sample block found in "${getPuzzlePath(year, day, 'readme.md')}". Keeping sample input file empty...`);
+        console.warn(
+          `[WARN] Unable to get sample input from "${getPuzzlePath(year, day, 'readme.md')}". Keeping the sample input file empty...`,
+        );
       }
     }
   }
