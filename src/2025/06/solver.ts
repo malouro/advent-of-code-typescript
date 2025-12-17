@@ -49,22 +49,18 @@ async function handleInputPartTwo(inputFile: string | FsPathLike): Promise<{
 }> {
   const input = (await readInputFile(inputFile)).split('\n');
   let operators: Operators = [];
-  let operatorIndex = 0;
 
   // setup
   for (let i = 0; i < input.length; i++) {
     const line = input[i];
 
     if (line.includes('*') || line.includes('+')) {
-      operatorIndex = i;
       operators = line.trim().split(/\s+/g).reverse();
+      input.splice(i, 1);
     }
   }
 
-  input.splice(operatorIndex, 1);
-
-  // This will be backwards grouping of
-  const done = [];
+  const doneOperands = [];
   let operandsInProgress: number[] = [];
 
   for (let i = input[0].length - 1; i >= -1; i--) {
@@ -77,7 +73,7 @@ async function handleInputPartTwo(inputFile: string | FsPathLike): Promise<{
       if (charToCheck === ' ' || i === -1) {
         emptyChars++;
         if (emptyChars === input.length) {
-          done.push(operandsInProgress);
+          doneOperands.push(operandsInProgress);
           operandsInProgress = [];
           continue;
         }
@@ -99,11 +95,8 @@ async function handleInputPartTwo(inputFile: string | FsPathLike): Promise<{
     }
   }
 
-  // console.log(done);
-  // console.log(operators);
-
   return {
-    operands: done,
+    operands: doneOperands,
     operators,
   };
 }
